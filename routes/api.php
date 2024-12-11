@@ -13,9 +13,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('api.geo-location.')
         ->group(function () {
             Route::get('/', [GeoLocationController::class, 'index'])->name('index');
-            Route::get('/{id}', [GeoLocationController::class, 'show'])->name('show');
+            Route::get('/{geoLocation}', [GeoLocationController::class, 'show'])->name('show');
             Route::post('/store', [GeoLocationController::class, 'store'])->name('store');
-            Route::post('/update/{id}', [GeoLocationController::class, 'update'])->name('update');
-            Route::delete('/delete/{id}', [GeoLocationController::class, 'delete'])->name('delete');
+            Route::post('/update/{geoLocation}', [GeoLocationController::class, 'update'])->name('update');
+            Route::delete('/delete/{geoLocation}', [GeoLocationController::class, 'delete'])->name('delete');
     });
 });

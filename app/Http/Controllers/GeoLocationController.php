@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexGeoLocationRequest;
 use App\Http\Requests\StoreGeoLocationRequest;
 use App\Http\Requests\UpdateGeoLocationRequest;
+use App\Http\Resources\GeoLocationResource;
 use App\Http\Resources\GeoLocationResourceCollection;
 use App\Models\GeoLocation;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class GeoLocationController extends Controller
     {
         $geoLocationsQuery = GeoLocation::query();
 
-        $geoLocationsQuery->where('created_by',auth()->id());
+        $geoLocationsQuery->where('created_by', auth()->id());
 
         if ($request->query('withTrashed')) $geoLocationsQuery->withTrashed();
 
@@ -52,7 +53,11 @@ class GeoLocationController extends Controller
      */
     public function show(GeoLocation $geoLocation)
     {
-        //
+        if ($geoLocation->created_by !== auth()->id()) abort(403, __("messages.forbidden"));
+
+        $response_data = new GeoLocationResource($geoLocation);
+
+        return response()->json($response_data);
     }
 
     /**
