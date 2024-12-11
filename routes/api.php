@@ -20,6 +20,8 @@ Route::middleware(['throttle:global'])->group(function () {
                 Route::post('/store', [GeoLocationController::class, 'store'])->name('store');
                 Route::post('/update/{geoLocation}', [GeoLocationController::class, 'update'])->name('update');
                 Route::delete('/destroy/{geoLocation}', [GeoLocationController::class, 'destroy'])->name('destroy');
+
+                Route::post('/calculate-route', [GeoLocationController::class, 'calculateRoute'])->name('calculateRoute');
             });
     });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CalculateRouteRequest;
 use App\Http\Requests\IndexGeoLocationRequest;
 use App\Http\Requests\StoreGeoLocationRequest;
 use App\Http\Requests\UpdateGeoLocationRequest;
@@ -100,6 +101,66 @@ class GeoLocationController extends Controller
         $geoLocation->delete();
 
         return response()->noContent();
+    }
+
+    private function haversine($lat1, $lon1, $lat2, $lon2)
+    {
+        $R = 6371;  // Yeryüzü yarıçapı (km)
+        $phi1 = deg2rad($lat1);
+        $phi2 = deg2rad($lat2);
+        $deltaPhi = deg2rad($lat2 - $lat1);
+        $deltaLambda = deg2rad($lon2 - $lon1);
+
+        $a = sin($deltaPhi / 2) * sin($deltaPhi / 2) + cos($phi1) * cos($phi2) * sin($deltaLambda / 2) * sin($deltaLambda / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $R * $c; // Mesafe kilometre cinsinden
+    }
+
+    public function calculateRoute(CalculateRouteRequest $request)
+    {
+        $startLat = $request->input('latitude');
+        $startLon = $request->input('longitude');
+
+        $locations = GeoLocation::where('created_by', auth()->id())->get();
+
+        $route = [];
+        $remainingLocations = $locations->toArray();
+
+        $currentLat = $startLat;
+        $currentLon = $startLon;
+
+        while (count($remainingLocations) > 0) {
+            $nearestLocation = null;
+            $shortestDistance = PHP_INT_MAX;
+
+            foreach ($remainingLocations as $location) {
+                $distance = $this->haversine($currentLat, $currentLon, $location['latitude'], $location['longitude']);
+
+                if ($distance < $shortestDistance) {
+                    $shortestDistance = $distance;
+                    $nearestLocation = [
+                        "id" => $location["id"],
+                        "name" => $location["name"],
+                        "latitude" => $location["latitude"],
+                        "longitude" => $location["longitude"],
+                        "marker_color" => $location["marker_color"],
+                        "distance" => $distance,
+                    ];
+                }
+            }
+
+            $route[] = $nearestLocation;
+            $currentLat = $nearestLocation['latitude'];
+            $currentLon = $nearestLocation['longitude'];
+
+            $remainingLocations = array_filter($remainingLocations, function($location) use ($nearestLocation) {
+                return $location['id'] !== $nearestLocation['id'];
+            });
+            $remainingLocations = array_values($remainingLocations);
+        }
+
+        return response()->json($route);
     }
 
 }
