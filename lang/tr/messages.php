@@ -12,5 +12,6 @@ return [
     */
 
     'forbidden' => 'Bu sayfaya erişiminiz yetkilendirilmedi.',
+    'bad-request' => 'Hatalı istek.',
 
 ];

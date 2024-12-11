@@ -12,5 +12,6 @@ return [
     */
 
     'forbidden' => 'You are not allowed to access this page.',
+    'bad-request' => 'Bad request.',
 
 ];

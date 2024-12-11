@@ -22,7 +22,10 @@ class UpdateGeoLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => "sometimes|string",
+            "latitude" => "sometimes|numeric",
+            "longitude" => "sometimes|numeric",
+            "marker_color" => "sometimes|nullable|hex_color",
         ];
     }
 }

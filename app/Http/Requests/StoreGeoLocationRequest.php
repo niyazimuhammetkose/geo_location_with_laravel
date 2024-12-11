@@ -25,7 +25,7 @@ class StoreGeoLocationRequest extends FormRequest
             "name" => "required|string",
             "latitude" => "required|numeric",
             "longitude" => "required|numeric",
-            "marker_color" => "nullable|hex_color",
+            "marker_color" => "sometimes|nullable|hex_color",
         ];
     }
 }

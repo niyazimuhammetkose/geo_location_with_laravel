@@ -77,7 +77,17 @@ class GeoLocationController extends Controller
      */
     public function update(UpdateGeoLocationRequest $request, GeoLocation $geoLocation)
     {
-        //
+        if ($geoLocation->created_by !== auth()->id()) abort(403, __("messages.forbidden"));
+
+        $validatedData = $request->validated();
+
+        if (empty($validatedData)) abort(400, __("messages.bad-request"));
+
+        $geoLocation->update($validatedData);
+
+        $response_data = new GeoLocationResource($geoLocation);
+
+        return response()->json($response_data);
     }
 
     /**
