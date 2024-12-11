@@ -95,7 +95,11 @@ class GeoLocationController extends Controller
      */
     public function destroy(GeoLocation $geoLocation)
     {
-        //
+        if ($geoLocation->created_by !== auth()->id()) abort(403, __("messages.forbidden"));
+
+        $geoLocation->delete();
+
+        return response()->noContent();
     }
 
 }

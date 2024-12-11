@@ -16,6 +16,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/{geoLocation}', [GeoLocationController::class, 'show'])->name('show');
             Route::post('/store', [GeoLocationController::class, 'store'])->name('store');
             Route::post('/update/{geoLocation}', [GeoLocationController::class, 'update'])->name('update');
-            Route::delete('/delete/{geoLocation}', [GeoLocationController::class, 'delete'])->name('delete');
+            Route::delete('/destroy/{geoLocation}', [GeoLocationController::class, 'destroy'])->name('destroy');
     });
 });
