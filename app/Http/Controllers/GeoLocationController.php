@@ -45,7 +45,11 @@ class GeoLocationController extends Controller
      */
     public function store(StoreGeoLocationRequest $request)
     {
-        //
+        $newGeoLocation = GeoLocation::create($request->all());
+
+        $response_data = new GeoLocationResource($newGeoLocation);
+
+        return response()->json($response_data,201);
     }
 
     /**

@@ -22,7 +22,10 @@ class StoreGeoLocationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => "required|string",
+            "latitude" => "required|numeric",
+            "longitude" => "required|numeric",
+            "marker_color" => "nullable|hex_color",
         ];
     }
 }
