@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class GeoLocationFactory extends Factory
     public function definition(): array
     {
         return [
-            'created_by' => fake()->numberBetween(1, 10),
+            'created_by' => User::factory(),
             'name' => fake()->word . " Location",
             'latitude' => fake()->latitude,
             'longitude' => fake()->longitude,
@@ -32,7 +33,7 @@ class GeoLocationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'deleted_at' => now(),
-            'deleted_by' => fake()->numberBetween(1, 10),
+            'deleted_by' => User::factory(),
         ]);
     }
 
@@ -43,7 +44,7 @@ class GeoLocationFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'updated_at' => now(),
-            'updated_by' => fake()->numberBetween(1, 10),
+            'updated_by' => User::factory(),
         ]);
     }
 
