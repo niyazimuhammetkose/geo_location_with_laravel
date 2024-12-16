@@ -22,7 +22,7 @@ class GeoLocationStoreTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_store_creates_a_new_geo_location()
+    public function testStoreCreatesANewGeoLocation()
     {
         // Arrange
         $data = [
@@ -41,7 +41,7 @@ class GeoLocationStoreTest extends TestCase
         $this->assertDatabaseHas('geo_locations', array_merge($data, ['created_by' => $this->user->id]));
     }
 
-    public function test_store_returns_422_for_missing_name_field()
+    public function testStoreReturns422ForMissingNameField()
     {
         // Arrange
         $data = [
@@ -59,7 +59,7 @@ class GeoLocationStoreTest extends TestCase
         $response->assertJsonValidationErrors('name');
     }
 
-    public function test_store_returns_422_for_missing_latitude_field()
+    public function testStoreReturns422ForMissingLatitudeField()
     {
         // Arrange
         $data = [
@@ -77,7 +77,7 @@ class GeoLocationStoreTest extends TestCase
         $response->assertJsonValidationErrors('latitude');
     }
 
-    public function test_store_returns_422_for_missing_longitude_field()
+    public function testStoreReturns422ForMissingLongitudeField()
     {
         // Arrange
         $data = [
@@ -95,7 +95,7 @@ class GeoLocationStoreTest extends TestCase
         $response->assertJsonValidationErrors('longitude');
     }
 
-    public function test_store_returns_422_for_invalid_marker_color()
+    public function testStoreReturns422ForInvalidMarkerColor()
     {
         // Arrange
         $data = [
@@ -114,7 +114,7 @@ class GeoLocationStoreTest extends TestCase
         $response->assertJsonValidationErrors('marker_color');
     }
 
-    public function test_store_returns_401_for_unauthorized_user()
+    public function testStoreReturns401ForUnauthorizedUser()
     {
         // Arrange
         $data = [

@@ -22,7 +22,7 @@ class GeoLocationShowDetailTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_show_returns_geo_location_for_authorized_user()
+    public function testShowReturnsGeoLocationForAuthorizedUser()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -42,7 +42,7 @@ class GeoLocationShowDetailTest extends TestCase
         ]);
     }
 
-    public function test_show_returns_404_for_non_existent_geo_location()
+    public function testShowReturns404ForNonExistentGeoLocation()
     {
         // Act
         $this->actingAs($this->user, 'sanctum');
@@ -52,7 +52,7 @@ class GeoLocationShowDetailTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_show_returns_403_for_unauthorized_user()
+    public function testShowReturns403ForUnauthorizedUser()
     {
         // Arrange
         $anotherUser = User::factory()->create();

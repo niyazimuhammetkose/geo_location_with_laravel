@@ -23,7 +23,7 @@ class GeoLocationDestroyTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_destroy_removes_geo_location()
+    public function testDestroyRemovesGeoLocation()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -37,7 +37,7 @@ class GeoLocationDestroyTest extends TestCase
         $this->assertSoftDeleted($geoLocation);
     }
 
-    public function test_destroy_fails_for_unauthenticated_user()
+    public function testDestroyFailsForUnauthenticatedUser()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -49,7 +49,7 @@ class GeoLocationDestroyTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_destroy_fails_for_geo_location_not_belonging_to_user()
+    public function testDestroyFailsForGeoLocationNotBelongingToUser()
     {
         // Arrange
         $otherUser = User::factory()->create();
@@ -63,7 +63,7 @@ class GeoLocationDestroyTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_destroy_fails_for_nonexistent_geo_location()
+    public function testDestroyFailsForNonexistentGeoLocation()
     {
         // Act
         $this->actingAs($this->user, 'sanctum');
@@ -73,7 +73,7 @@ class GeoLocationDestroyTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_destroy_fails_for_soft_deleted_geo_location()
+    public function testDestroyFailsForSoftDeletedGeoLocation()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -87,7 +87,7 @@ class GeoLocationDestroyTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_destroy_handles_large_data_set()
+    public function testDestroyHandlesLargeDataSet()
     {
         // Arrange
         $this->withoutMiddleware(ThrottleRequests::class);

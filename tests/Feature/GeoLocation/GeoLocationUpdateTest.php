@@ -22,7 +22,7 @@ class GeoLocationUpdateTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_update_modifies_geo_location()
+    public function testUpdateModifiesGeoLocation()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -37,7 +37,7 @@ class GeoLocationUpdateTest extends TestCase
         $this->assertDatabaseHas('geo_locations', array_merge($updateData, ['id' => $geoLocation->id]));
     }
 
-    public function test_update_returns_403_for_unauthorized_user()
+    public function testUpdateReturns403ForUnauthorizedUser()
     {
         // Arrange
         $anotherUser = User::factory()->create();
@@ -53,7 +53,7 @@ class GeoLocationUpdateTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_update_returns_404_for_non_existing_geo_location()
+    public function testUpdateReturns404ForNonExistingGeoLocation()
     {
         // Arrange
         $nonExistingId = 999999;  // Var olmayan bir id
@@ -67,7 +67,7 @@ class GeoLocationUpdateTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_update_returns_422_for_invalid_data()
+    public function testUpdateReturns422ForInvalidData()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);
@@ -83,7 +83,7 @@ class GeoLocationUpdateTest extends TestCase
         $response->assertJsonValidationErrors('name');
     }
 
-    public function test_update_returns_400_for_missing_required_field()
+    public function testUpdateReturns400ForMissingRequiredField()
     {
         // Arrange
         $geoLocation = GeoLocation::factory()->create(['created_by' => $this->user->id]);

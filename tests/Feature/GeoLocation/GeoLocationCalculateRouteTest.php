@@ -22,7 +22,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_calculate_route_returns_sorted_route()
+    public function testCalculateRouteReturnsSortedRoute()
     {
         // Arrange
         GeoLocation::factory(3)->create(['created_by' => $this->user->id]);
@@ -39,7 +39,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $this->assertCount(3, $response->json());
     }
 
-    public function test_calculate_route_fails_with_missing_latitude()
+    public function testCalculateRouteFailsWithMissingLatitude()
     {
         // Arrange
         $data = ['longitude' => -73.935242];
@@ -53,7 +53,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $response->assertJsonValidationErrors(['latitude']);
     }
 
-    public function test_calculate_route_fails_with_missing_longitude()
+    public function testCalculateRouteFailsWithMissingLongitude()
     {
         // Arrange
         $data = ['latitude' => 40.73061];
@@ -67,7 +67,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $response->assertJsonValidationErrors(['longitude']);
     }
 
-    public function test_calculate_route_fails_with_invalid_latitude_format()
+    public function testCalculateRouteFailsWithInvalidLatitudeFormat()
     {
         // Arrange
         $data = ['latitude' => 'invalid_latitude', 'longitude' => -73.935242];
@@ -81,7 +81,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $response->assertJsonValidationErrors(['latitude']);
     }
 
-    public function test_calculate_route_fails_with_invalid_longitude_format()
+    public function testCalculateRouteFailsWithInvalidLongitudeFormat()
     {
         // Arrange
         $data = ['latitude' => 40.73061, 'longitude' => 'invalid_longitude'];
@@ -95,7 +95,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $response->assertJsonValidationErrors(['longitude']);
     }
 
-    public function test_calculate_route_fails_for_unauthenticated_user()
+    public function testCalculateRouteFailsForUnauthenticatedUser()
     {
         // Arrange
         $data = ['latitude' => 40.73061, 'longitude' => -73.935242];
@@ -107,7 +107,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_calculate_route_fails_with_no_geo_locations()
+    public function testCalculateRouteFailsWithNoGeoLocations()
     {
         // Arrange
         $data = ['latitude' => 40.73061, 'longitude' => -73.935242]; // Starting point
@@ -121,7 +121,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $this->assertEmpty($response->json());
     }
 
-    public function test_calculate_route_ignores_geo_locations_not_belonging_to_user()
+    public function testCalculateRouteIgnoresGeoLocationsNotBelongingToUser()
     {
         // Arrange
         GeoLocation::factory()->create(['created_by' => User::factory()->create()->id, 'latitude' => 40.73061, 'longitude' => -73.935242]);
@@ -137,7 +137,7 @@ class GeoLocationCalculateRouteTest extends TestCase
         $this->assertEmpty($response->json());
     }
 
-    public function test_calculate_route_handles_large_data_set()
+    public function testCalculateRouteHandlesLargeDataSet()
     {
         // Arrange
         GeoLocation::factory()->count(1000)->create(['created_by' => $this->user->id]); // Büyük veri seti

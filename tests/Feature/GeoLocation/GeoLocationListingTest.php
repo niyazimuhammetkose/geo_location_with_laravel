@@ -22,7 +22,7 @@ class GeoLocationListingTest extends TestCase
         $this->user = User::factory()->create();
     }
 
-    public function test_index_displays_user_geo_locations()
+    public function testIndexDisplaysUserGeoLocations()
     {
         // Arrange
         GeoLocation::factory(10)->create(['created_by' => $this->user->id]);
@@ -37,7 +37,7 @@ class GeoLocationListingTest extends TestCase
         $response->assertJsonCount(10, 'data');
     }
 
-    public function test_index_returns_empty_when_no_geo_locations()
+    public function testIndexReturnsEmptyWhenNoGeoLocations()
     {
         // Arrange
         $this->actingAs($this->user, 'sanctum');
@@ -50,7 +50,7 @@ class GeoLocationListingTest extends TestCase
         $response->assertJsonCount(0, 'data');
     }
 
-    public function test_index_requires_authentication()
+    public function testIndexRequiresAuthentication()
     {
         // Act
         $response = $this->getJson(route('api.geo-location.index'));
@@ -59,7 +59,7 @@ class GeoLocationListingTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_index_fails_on_post_request()
+    public function testIndexFailsOnPostRequest()
     {
         // Act
         $this->actingAs($this->user, 'sanctum');
@@ -69,7 +69,7 @@ class GeoLocationListingTest extends TestCase
         $response->assertStatus(405);
     }
 
-    public function test_index_handles_large_number_of_records()
+    public function testIndexHandlesLargeNumberOfRecords()
     {
         // Arrange
         GeoLocation::factory(1000)->create(['created_by' => $this->user->id]);
